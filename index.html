@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Easy Peasy Accessibility</title>
+
+    <meta name="description" content="Making the web a better place.">
+    <meta name="author" content="Heather Migliorisi">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/simple.css" id="theme">
+<!--    <link rel="stylesheet" href="css/custom.css">-->
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="plugin/accessibility-helper/css/accessibility-helper.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+
+    <style>
+        @font-face {font-family: "Peas & Carrots";
+            /*src: url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.eot");*/
+            /*src: url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.eot?#iefix") format("embedded-opentype"),*/
+            /*url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.woff2") format("woff2"),*/
+            /*url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.woff") format("woff"),*/
+            /*url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.ttf") format("truetype"),*/
+            /*url("//db.onlinewebfonts.com/t/cc72fa3819f91eca93506db7ecbb7235.svg#Peas & Carrots") format("svg");*/
+        }
+        .dark-bg h1{
+            color:white;
+            font-family:  'Peas & Carrots','Lobster Two', cursive;
+            font-size: 6em;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            font-weight: 100;
+        }
+
+        .dark-bg div.slide-background.present {
+            color: white;
+            background: #5E5E5E;
+            background: -moz-linear-gradient(-45deg, rgba(0, 0, 0, 1) 0%, rgba(94, 94, 94, 1) 64%, rgba(10, 10, 10, 1) 100%);
+            background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(0, 0, 0, 1)), color-stop(64%, rgba(94, 94, 94, 1)), color-stop(100%, rgba(10, 10, 10, 1)));
+            background: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, 1) 0%, rgba(94, 94, 94, 1) 64%, rgba(10, 10, 10, 1) 100%);
+            background: -o-linear-gradient(-45deg, rgba(0, 0, 0, 1) 0%, rgba(94, 94, 94, 1) 64%, rgba(10, 10, 10, 1) 100%);
+            background: -ms-linear-gradient(-45deg, rgba(0, 0, 0, 1) 0%, rgba(94, 94, 94, 1) 64%, rgba(10, 10, 10, 1) 100%);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(94, 94, 94, 1) 64%, rgba(10, 10, 10, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#0a0a0a', GradientType=1);
+
+            background: -moz-linear-gradient(-45deg, rgba(6, 28, 46, 1) 0%, rgba(0, 52, 95, 1) 64%, rgba(6, 28, 46, 1) 100%);
+            background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(6, 28, 46, 1)), color-stop(64%, rgba(0, 52, 95, 1)), color-stop(100%, rgba(6, 28, 46, 1)));
+            background: -webkit-linear-gradient(-45deg, rgba(6, 28, 46, 1) 0%, rgba(0, 52, 95, 1) 64%, rgba(6, 28, 46, 1) 100%);
+            background: -o-linear-gradient(-45deg, rgba(6, 28, 46, 1) 0%, rgba(0, 52, 95, 1) 64%, rgba(6, 28, 46, 1) 100%);
+            background: -ms-linear-gradient(-45deg, rgba(6, 28, 46, 1) 0%, rgba(0, 52, 95, 1) 64%, rgba(6, 28, 46, 1) 100%);
+            background: linear-gradient(135deg, rgba(6, 28, 46, 1) 0%, rgba(0, 52, 95, 1) 64%, rgba(6, 28, 46, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#061c2e', endColorstr='#061c2e', GradientType=1);
+
+        }
+
+        html.everyone div.slide-background.present{
+            background-position: 50% 15%;
+            background-size: contain;
+            background-color: #fff;
+        }
+        html.light-bg div.slide-background.present{
+            background-color: #F1F1F0 !important;
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6{
+            line-height: 1.1em;
+            text-shadow: none;
+        }
+        h1.smaller{
+            font-size: 3em;
+        }
+        ol.no-num {
+            list-style: none;
+        }
+        .left-align{
+            text-align: left;
+        }
+        blockquote {
+            background: #f9f9f9 !important;
+            border-left: 10px solid #ccc !important;
+            padding: 0.5em 10px !important;
+            quotes: "\201C""\201D""\2018""\2019" !important;
+            font-size: 1.3em !important;
+            font-style: normal !important;
+            text-align: left !important;
+            width: 75% !important;
+        }
+        blockquote:before {
+            color: #666 !important;
+            content: open-quote !important;
+            font-size: 4em !important;
+            line-height: 0 !important;
+            margin-right: 0em !important;
+            vertical-align: -0.4em !important;
+        }
+        blockquote.no-quote:before {
+            color: #f37021 !important;
+            content: '';
+            font-size: 0 !important;
+            line-height: 0!important;
+            margin-right: 0em !important;
+            vertical-align: 0 !important;
+            margin-left: -18px;
+        }
+        blockquote p {
+            display: inline !important;
+        }
+        .list-inline li{
+            list-style: none;
+            float: left;
+            width: 25%;
+        }
+        .reveal section img.no-shadow{
+            background: none;
+            box-shadow: none;
+            -webkit-transition: all .2s linear;
+            -moz-transition: all .2s linear;
+            -ms-transition: all .2s linear;
+            -o-transition: all .2s linear;
+            transition: all .2s linear;
+        }
+        .reveal pre {
+            margin: 15px 0;
+        }
+        footer {
+            position: fixed;
+            height: 40px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            font-weight: 900;
+            font-family: Gotham-Round, sans-serif;
+            padding: 1.5em;
+            background: rgba(241, 241, 241, 0.99);
+        }
+
+        .callout-letter {
+            margin-right: 5px !important;
+            color: white;
+            width: 75px !important;
+            background: #115e96;
+            font-weight: bold !important;
+            padding: 10px 20px 5px !important;
+        }
+
+        .intro{
+            bottom: -5em;
+            position: absolute;
+            padding: 15px  !important;
+            display: block;
+            background: linear-gradient( rgba(8, 8, 8, 0.65), rgba(8, 8, 8, 0.85) );
+            width: 120%;
+            margin-left: -4em !important;
+        }
+
+        .why{
+            top: -2em;
+            left: -2em;
+            position: absolute;
+            padding: 15px !important;
+            display: block;
+            background: linear-gradient( rgba(51, 51, 51, 0.65), rgba(8, 8, 8, 0.85) );
+            width: 140%;
+            color: white !important;
+        }
+        h1 small, h2 small, h3 small{
+            vertical-align: text-bottom !important;
+        }
+
+        .float-left{
+            float:left;
+        }
+        .float-right{
+            float:right;
+        }
+
+        footer p {
+            margin: 20px 2em 20px 0;
+            line-height: 1.3;
+        }
+
+        .reveal small.image-credit-top{
+            position: absolute;
+            bottom: 4px;
+            right: 40px;
+            font-size: 10px;
+            line-height: 1em;
+        }
+
+        .reveal h1.disclaimer{
+            /*font-family: 'Kranky';*/
+            text-align: left;
+            font-size: 3.5em;
+            color: gainsboro;
+        }
+        html.bg-contain div.slide-background.present {
+            background-size: contain;
+        }
+        html.bg-filter div.slide-background.present, .gray-filter {
+            -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+        }
+
+        /*New CSS*/
+        .reveal .controls{
+            bottom: -10px;
+        }
+
+        .icon{
+            display: inline-block;
+            margin:.5em;
+            color: #115e96;
+            fill: #115e96;
+        }
+        .icon svg {
+            width: 2em;
+            height: 2em;
+        }
+        a{
+            color: #115e96;
+            fill: #115e96;
+            text-decoration: none;
+            padding: 5px;
+        }
+        a:focus, a:hover{
+            background: lightgray;
+            outline: 3px solid #115e96;
+        }
+        .no-list-type li{
+            list-style-type: none;
+        }
+        .no-list-type svg{
+            width: 60px;
+            height: auto;
+            fill: white;
+            background: #115e96;
+            padding: 11px;
+            border-radius: 5em;
+            vertical-align: middle;
+            margin-bottom: .5em;
+        }
+        h1.why {
+            position: absolute;
+            top: -2.8em;
+            background: linear-gradient(135deg, rgba(6,28,46,1) 0%, rgba(0,52,95,1) 64%, rgba(6,28,46,1) 100%);
+        }
+        .warning{
+            border: 3px solid red !important;padding: 20px !important;width: 50% !important;margin: auto !important;
+        }
+        .warning img{
+            float: left !important; box-shadow: none !important; width: 50px; height: 50px;
+        }
+
+    </style>
+</head>
+
+    <body>
+        <header>
+            <div style="text-align:center;">
+            </div>
+            <div>
+            </div>
+        </header>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <section data-state="dark-bg">
+                        <h1>Easy Peasy Accessibility</h1>
+                        <img src="images/three-peas.png" style="background: transparent;box-shadow: none;width: auto;max-width: 500px;margin-top: -150px;">
+                        <aside class="notes">
+                            <p>HELLO :)</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <p style="font-size: 3.2em;text-align: left;color: #115e96;font-weight: 800;">Disclaimer: Everything presented here is my own and does not reflect the views of my employer.</p>
+                        </div>
+                        <aside class="notes">
+                            <p>Disclaimer...</p>
+                        </aside>
+                    </section>
+                </section>
+                <section data-state="dark-bg">
+                    <h1>What is Accessibility?</h1>
+                    <aside class="notes">
+                        <p> What is Accessibility?</p>
+                    </aside>
+                </section>
+                <section>
+                    <section class="fragment">
+                        <h1>ac·ces·si·bil·i·ty</h1>
+                        <blockquote class="no-quote fragment fade-in" style="font-size: 2em !important;width: 65% !important;float: left;">
+                            <p>easy to use or understand <br><small style="vertical-align: baseline;">@ dictionary.com</small></p>
+                        </blockquote>
+                        <ul style="width: 27%;float:left;margin-left: 5%;margin-top: 12px;font-size: 1.5em;">
+                            <li class="fragment fade-in" >Ability</li>
+                            <li class="fragment fade-in">Age</li>
+                            <li class="fragment fade-in">Device</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Something is accessible, if it is easy to use or understand...Regardless of:</p>
+                            <ul>
+                                <li>Ability</li>
+                                <li>Age</li>
+                                <li>Device</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Disability Classifications</h1>
+                        <ul class="no-list-type">
+                            <li class="fragment fade-in" >
+                                <svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28">
+                                    <path d="M5.234 21.187q-0.031 0-0.094-0.031-1.344-0.891-2.633-2.266t-2.18-2.812q-0.328-0.469-0.328-1.078 0-0.141 0.031-0.297t0.063-0.281 0.109-0.281 0.133-0.25 0.164-0.266 0.156-0.234 0.187-0.242 0.172-0.227q2.875-3.922 7.063-5.703-1.719-3.094-1.719-3.297 0-0.297 0.266-0.453 1.813-1 2-1 0.281 0 0.438 0.25l1.937 3.578q1.437-0.297 3-0.297 4.156 0 7.773 2.148t5.914 5.773q0.313 0.484 0.313 1.078t-0.313 1.078q-1.422 2.219-3.414 3.961t-4.352 2.742q1.719 3.094 1.719 3.297 0 0.313-0.266 0.453-1.813 1-1.984 1-0.297 0-0.453-0.25l-1.937-3.578-1-1.859-6.937-12.812 0.109-0.109q-0.906 0.375-1.547 0.734 0.047 0.078 1.984 3.656t3.797 7.016 1.859 3.484q0 0.109-0.141 0.141-0.203 0.047-1.125 0.047-0.891 0-0.938-0.109l-7.125-13.141q-0.609 0.438-1.281 1.062 0.375 0.672 3.344 6.148t2.969 5.539q0 0.156-0.172 0.156-0.219 0-1.289-0.344t-1.133-0.438l-1.656-3.078-3.5-6.453q-0.688 0.828-1.219 1.656 0.031 0.047 0.281 0.391t0.359 0.531l2.75 5.109q0 0.156-0.156 0.156zM18.203 19.594l0.766 1.422q4.266-1.734 7.031-6.016-2.812-4.328-7.172-6.078 1.047 1 1.609 2.32t0.562 2.758q0 1.656-0.734 3.133t-2.063 2.461zM13.25 10q0 0.313 0.219 0.531t0.531 0.219q1.344 0 2.297 0.953t0.953 2.297q0 0.313 0.219 0.531t0.531 0.219 0.531-0.219 0.219-0.531q0-1.969-1.391-3.359t-3.359-1.391q-0.313 0-0.531 0.219t-0.219 0.531zM18.969 8.984l-0.141-0.063 0.109 0.109z"></path>
+                                </svg>
+                                <strong>Vision <small style="vertical-align: baseline">(approx 8.1 million people)</small> </strong>- color blind, low vision and blind
+                            </li>
+                            <li class="fragment fade-in">
+                                <svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28">
+                                    <path d="M16.5 13q0 0.406 0.297 0.703t0.703 0.297 0.703-0.297 0.297-0.703q0-2.281-1.609-3.891t-3.891-1.609-3.891 1.609-1.609 3.891q0 0.406 0.297 0.703t0.703 0.297 0.703-0.297 0.297-0.703q0-1.453 1.031-2.477t2.469-1.023 2.469 1.023 1.031 2.477zM13.047 4q-1.828 0-3.492 0.711t-2.875 1.922-1.922 2.875-0.711 3.492q0 0.406 0.297 0.703t0.703 0.297 0.703-0.297 0.297-0.703q0-2.891 2.055-4.945t4.945-2.055 4.945 2.055 2.055 4.945q0 0.859-0.281 1.617t-0.586 1.164-0.93 1.125q-0.531 0.609-0.812 0.984t-0.68 1.039-0.578 1.422-0.18 1.648q0 1.656-1.172 2.828t-2.828 1.172q-0.406 0-0.703 0.297t-0.297 0.703 0.297 0.703 0.703 0.297q2.484 0 4.242-1.758t1.758-4.242q0-0.641 0.117-1.156t0.414-1 0.523-0.781 0.711-0.844q0.547-0.641 0.828-1.008t0.688-1.055 0.586-1.461 0.18-1.695q0-1.828-0.711-3.492t-1.922-2.875-2.875-1.922-3.492-0.711zM9.234 15.234l3.531 3.531-9.047 9.047q-0.187 0.187-0.453 0.187t-0.453-0.187l-2.625-2.625q-0.187-0.187-0.187-0.453t0.187-0.453zM25.188 0.187l2.625 2.625q0.187 0.187 0.187 0.453t-0.187 0.469l-3.641 3.641-0.406 0.391-1.109 1.109q-1.031-2.391-3.047-4.031l4.656-4.656q0.203-0.187 0.469-0.187t0.453 0.187z"></path>
+                                </svg>
+                                <strong>Hearing <small style="vertical-align: baseline">(approx 7.6 million people)</small> </strong>- deaf and hard of hearing
+                            </li>
+                            <li class="fragment fade-in">
+                                <svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 21 32">
+                                    <path d="M15.403 4.697c0 2.594-2.103 4.697-4.697 4.697s-4.697-2.103-4.697-4.697c0-2.594 2.103-4.697 4.697-4.697s4.697 2.103 4.697 4.697z"></path>
+                                    <path d="M17.015 10.589h-12.758s-4.28 0-4.28 4.999v14.278c-0.004 0.047-0.006 0.101-0.006 0.155 0 1.153 0.935 2.088 2.088 2.088s2.088-0.935 2.088-2.088c0-0.055-0.002-0.109-0.006-0.163l0-12.751h0.742v14.15l11.366-0.058v-14.069h0.719v0.162c-0.004 0.047-0.006 0.101-0.006 0.155 0 1.153 0.935 2.088 2.088 2.088s2.088-0.935 2.088-2.088c0-0.055-0.002-0.109-0.006-0.163l0-1.628c0.162-5.069-4.117-5.069-4.117-5.069z"></path>
+                                </svg>
+                                <strong>Motor <small style="vertical-align: baseline">(approx 19.9 million people)</small> </strong>- loss/limitation of function in muscle control
+                            </li>
+                            <li class="fragment fade-in">
+                                <svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 28 32">
+                                    <path d="M27.713 10.564c0.336-1.093 0.308-1.989-0.056-2.69-0.308-0.616-0.813-1.009-1.289-1.317-0.336-1.205-1.177-2.242-2.55-2.634-0.364-0.588-0.813-1.121-1.373-1.485s-1.233-0.588-1.961-0.588c-1.289-1.177-2.69-1.793-4.119-1.849-0.056 0-0.112 0-0.14 0-0.757 0-1.513 0.168-2.27 0.476-0.785-0.224-1.905-0.504-3.278 0.14-0.841-0.14-1.709 0.14-2.438 0.757-0.532-0.056-1.065 0.028-1.457 0.224-0.476 0.224-0.813 0.56-1.121 0.897-1.513 0.476-2.466 1.177-3.026 1.961-0.56 0.757-0.785 1.513-1.093 2.13-0.532 0.42-1.065 0.925-1.317 1.681-0.28 0.813-0.308 1.821-0.028 3.082-0.168 1.625 0.14 2.914 0.981 3.783 0.813 0.813 2.018 1.065 3.335 0.953 1.009 0.644 2.298 0.701 3.699 0.476 0.757 0.532 1.625 0.953 2.662 1.177 0.28 0.897 0.504 1.821 0.869 2.718 0.42 1.009 1.177 1.961 2.466 2.494 0.701 0.28 1.317 0.897 1.681 1.401 0 0 0 0 0 0 0.224 0.336 0.336 0.616 0.701 0.897s0.785 0.336 1.289 0.364c1.261 0.084 2.242-0.476 2.998-1.065v0c0.028-0.028 0.056-0.056 0.084-0.084 0.112-0.14 0.168-0.28 0.196-0.392 0.056-0.224 0.028-0.336 0-0.504-0.056-0.336-0.224-0.785-0.616-1.653-0.028-0.056-0.028-0.112-0.056-0.14 0.336 0 0.672-0.056 0.981-0.14 1.149-0.28 2.158-0.925 2.83-1.429 1.093-0.813 1.821-1.429 2.27-2.074 0.504-0.757 0.729-2.158 0.364-2.97 0.112-0.112 0.224-0.196 0.336-0.336 0.869-1.009 0.953-2.494 0.448-4.259zM17.989 24.042c-0.308-0.028-0.392-0.028-0.42-0.056 0 0-0.112-0.14-0.364-0.532 0-0.028-0.028-0.028-0.028-0.056-0.476-0.644-1.233-1.485-2.382-1.933-0.897-0.364-1.261-0.869-1.625-1.653-0.224-0.532-0.42-1.205-0.644-1.933 0.28 0 0.56-0.028 0.869-0.056 0.532 0.196 1.205 0.532 2.074 0.56 0.476 0.028 1.233-0.252 1.821-0.532-0.056 0.981 0.112 1.961 0.672 2.718 0.14 0.196 0.308 0.392 0.504 0.532 0.196 0.532 0.42 1.009 0.616 1.429 0.252 0.532 0.336 0.841 0.42 1.065-0.42 0.308-0.869 0.476-1.513 0.448zM25.247 17.205c-0.28 0.392-0.897 0.953-1.905 1.737-0.56 0.42-1.485 0.953-2.27 1.177-0.392 0.112-0.757 0.112-1.065 0.056-1.149-0.392-1.373-2.158-0.953-3.138 0.504-0.196 0.981-0.504 1.457-0.925 0.336 0.168 0.672 0.308 1.065 0.336 0.532 0.056 1.149-0.084 1.709-0.42 0.785 0.028 1.513 0 2.158-0.168 0.168 0.42 0.168 0.897-0.196 1.345zM26.060 13.758c-0.392 0.42-1.233 0.701-2.606 0.644-0.084-0.616-0.112-0.925-0.112-0.981 0-0.028 0 0 0.028-0.056s0.084-0.112 0.196-0.224c0.196-0.224 0.168-0.56-0.028-0.757-0.112-0.084-0.224-0.14-0.364-0.14-0.168 0-0.308 0.084-0.42 0.196s-0.196 0.196-0.28 0.336-0.168 0.308-0.196 0.504c-0.056 0.364 0.028 0.672 0.112 1.317 0 0.028 0 0.056 0 0.084-0.252 0.168-0.42 0.196-0.644 0.168-0.28-0.028-0.616-0.196-0.981-0.42-0.308-0.196-0.785-0.14-1.009 0.14-0.616 0.701-0.981 0.925-1.485 1.009 0-0.028-0.028-0.028-0.028-0.056-0.168-0.308-0.224-0.448-0.252-0.56s-0.028-0.196 0.084-0.532c0.084-0.28-0.084-0.588-0.364-0.672-0.056-0.028-0.112-0.028-0.168-0.028-0.252 0-0.448 0.168-0.504 0.392-0.112 0.392-0.168 0.729-0.084 1.037s0.196 0.532 0.336 0.841c0 0 0 0.028 0.028 0.028-0.757 0.644-1.261 0.757-1.709 0.757-0.42-0.028-0.897-0.196-1.429-0.392 0-0.056 0-0.112 0-0.14-0.112-0.925-0.056-1.317 0.056-1.513 0.084-0.196 0.28-0.336 0.672-0.672 0.224-0.196 0.252-0.532 0.084-0.757-0.112-0.14-0.28-0.196-0.476-0.196-0.112 0-0.224 0.056-0.336 0.14-0.308 0.28-0.701 0.504-0.925 1.009-0.224 0.476-0.252 1.065-0.168 2.017-1.877 0.14-3.054-0.364-4.147-1.149 0-0.028 0-0.056 0-0.056 0.056-0.476 0.14-0.588 0.224-0.672s0.28-0.14 0.616-0.308c0.28-0.112 0.392-0.42 0.28-0.701-0.084-0.196-0.28-0.336-0.504-0.308-0.056 0-0.14 0.028-0.196 0.056-0.28 0.112-0.588 0.196-0.897 0.476s-0.504 0.729-0.588 1.345c0 0.028 0 0.028 0 0.056-1.233 0.168-2.13 0.056-2.606-0.336-0.168-0.14-0.392-0.196-0.588-0.168-1.177 0.14-1.933-0.056-2.354-0.476s-0.701-1.205-0.504-2.606c0-0.028 0-0.056 0-0.084 0.084-0.028 0.196-0.056 0.252-0.056 0.224-0.028 0.448 0.028 0.813 0.252 0.252 0.168 0.588 0.112 0.757-0.112s0.112-0.56-0.112-0.757c-0.028 0-0.028-0.028-0.056-0.028-0.392-0.28-0.785-0.42-1.177-0.476-0.14 0-0.252 0-0.364 0s-0.224 0.056-0.336 0.056c-0.084-0.672-0.028-1.149 0.084-1.457 0.112-0.336 0.308-0.588 0.616-0.841 0.308 0.252 0.785 0.644 1.457 0.841 0.476 0.14 1.037 0.168 1.681 0.056 0.028 0 0.084 0 0.112 0 0.084-0.028 0.196-0.056 0.28-0.084 0 0 0 0 0 0 0.196-0.056 0.364-0.112 0.56-0.196 0.869-0.364 1.429-0.308 1.821-0.168s0.644 0.392 0.813 0.588c0.196 0.224 0.532 0.252 0.757 0.084 0.224-0.196 0.252-0.532 0.084-0.757-0.224-0.28-0.644-0.701-1.289-0.897-0.476-0.168-1.121-0.224-1.821-0.056 0.028-0.392 0-0.729 0-0.813 0.028-0.28-0.196-0.56-0.504-0.588-0.028 0-0.056 0-0.056 0-0.28 0-0.504 0.224-0.504 0.504-0.028 0.364 0.028 0.701 0 0.981-0.028 0.14-0.056 0.224-0.112 0.252-0.028 0.028-0.028 0.056-0.056 0.056-0.616 0.168-1.065 0.14-1.429 0.028-0.448-0.14-0.785-0.364-1.065-0.616 0.336-0.701 0.532-1.289 0.897-1.765 0.392-0.56 1.009-1.065 2.41-1.457 0.14-0.028 0.252-0.112 0.364-0.224 0.28-0.336 0.56-0.56 0.813-0.672 0.196-0.084 0.336-0.14 0.588-0.084 0.168 0.364 0.42 0.729 0.616 1.149 0 0.028 0 0.028 0 0.056 0.028 0.168 0 0.224-0.14 0.364s-0.364 0.252-0.56 0.336c-0.28 0.112-0.392 0.42-0.28 0.701s0.42 0.392 0.701 0.28c0.252-0.112 0.616-0.252 0.897-0.56 0.168 0.14 0.364 0.252 0.56 0.28 0.392 0.084 0.729 0.028 0.869 0.028 0.308 0 0.56-0.224 0.56-0.504 0-0.308-0.224-0.532-0.532-0.56-0.028 0-0.028 0-0.056 0-0.252 0-0.476 0.028-0.588 0s-0.14 0-0.224-0.224c-0.196-0.701-0.56-1.261-0.785-1.597 0.56-0.532 0.925-0.616 1.401-0.476 0.196 0.056 0.42 0.028 0.616-0.056 0.953-0.56 1.429-0.42 2.13-0.224-0.028 0.252 0 0.56 0.028 0.925 0.084 0.729 0.252 1.625 0.504 2.438 0.028 0.112 0 0.532-0.224 0.841-0.196 0.308-0.476 0.532-0.925 0.532-0.308-0.028-0.56 0.224-0.56 0.504-0.028 0.308 0.224 0.56 0.504 0.56 0.028 0 0.028 0 0.056 0 0.841 0 1.485-0.476 1.849-1.009 0.28-0.42 0.42-0.841 0.392-1.289 0.168 0.056 0.308 0.084 0.448 0.084 0.308 0.056 0.56-0.168 0.616-0.448s-0.168-0.56-0.448-0.616c-0.196-0.028-0.476-0.112-0.672-0.196s-0.196-0.14-0.196-0.14c0-0.084-0.028-0.14-0.056-0.196-0.084-0.42-0.168-0.869-0.196-1.205-0.028-0.308-0.028-0.532-0.028-0.672 0.028-0.028 0.028-0.056 0.056-0.056 0.672-0.308 1.317-0.476 1.933-0.448 1.037 0.028 2.046 0.504 3.138 1.541 0 0 0 0.028-0.028 0.028-0.112 0.28-0.504 1.037-1.261 1.373-0.28 0.112-0.392 0.448-0.252 0.701 0.112 0.28 0.448 0.392 0.729 0.252 1.149-0.532 1.653-1.597 1.793-1.933 0-0.028 0.028-0.056 0.028-0.084 0.42 0 0.757 0.112 1.093 0.336 0.28 0.196 0.588 0.504 0.841 0.897 0 0-0.028 0.056-0.028 0.056-0.028 0.028-0.028 0.056-0.056 0.084 0 0-0.056 0.14-0.112 0.252-0.028 0.056-0.056 0.14-0.084 0.196-0.084 0.196-0.224 0.392-0.364 0.56-0.168 0.224-0.364 0.364-0.504 0.42s-0.196 0.056-0.392-0.084c-0.252-0.168-0.588-0.112-0.757 0.112-0.168 0.252-0.112 0.588 0.112 0.757 0.448 0.336 1.009 0.392 1.429 0.224 0.168-0.056 0.308-0.168 0.448-0.252 0.112 0.28 0.28 0.56 0.448 0.841 0.14 0.252 0.476 0.336 0.729 0.196s0.336-0.476 0.196-0.729c0-0.028-0.028-0.028-0.028-0.056-0.28-0.42-0.42-0.701-0.448-0.953-0.028-0.224 0.028-0.476 0.224-0.841 1.149 0.252 1.513 0.785 1.681 1.793 0.028 0.224 0.168 0.392 0.336 0.504 0.504 0.308 0.841 0.56 1.009 0.869 0.14 0.252 0.196 0.644 0.028 1.345-0.224 0.14-0.616 0.196-1.037 0.168-0.224-0.028-0.42-0.056-0.588-0.084s-0.308-0.112-0.252-0.084c-0.252-0.168-0.588-0.112-0.757 0.112-0.168 0.252-0.112 0.588 0.112 0.757 0.196 0.14 0.364 0.196 0.616 0.252s0.504 0.112 0.813 0.14c0.336 0.028 0.701 0.028 1.065-0.056 0.336 1.373 0.168 2.186-0.224 2.606z"></path>
+                                    <path d="M9.219 10.564c0 0 0 0 0 0-0.392 0.392-1.009 0.841-1.401 0.925-0.196 0.056-0.308 0.028-0.42-0.056s-0.28-0.308-0.42-0.813c-0.056-0.252-0.308-0.42-0.56-0.42-0.28 0.028-0.476 0.252-0.504 0.504-0.028 0.644-0.168 0.841-0.28 0.953s-0.336 0.196-0.673 0.364c-0.336 0.168-0.729 0.42-1.009 0.869-0.168 0.252-0.084 0.588 0.168 0.729s0.588 0.084 0.757-0.168c0 0 0 0 0-0.028 0.14-0.224 0.308-0.336 0.588-0.476 0.224-0.112 0.588-0.224 0.925-0.56 0.084-0.084 0.168-0.168 0.224-0.28 0.056 0.028 0.084 0.084 0.14 0.112 0.392 0.28 0.897 0.336 1.289 0.224 0.813-0.196 1.457-0.785 1.905-1.205 0.224-0.196 0.224-0.532 0.028-0.757-0.196-0.112-0.532-0.112-0.757 0.084z"></path>
+                                    <path d="M21.912 11.264c0 0-0.028 0-0.028 0-0.112 0-0.42-0.084-0.616-0.168-0.028 0-0.028 0-0.028 0 0.14-0.392 0.14-0.869-0.084-1.289-0.252-0.476-0.729-0.897-1.457-1.289-0.084-0.056-0.168-0.056-0.252-0.056-0.308 0-0.532 0.224-0.56 0.532 0 0.196 0.112 0.392 0.28 0.476 0.616 0.336 0.897 0.644 1.009 0.841s0.084 0.308 0 0.504c-0.168 0.364-0.785 0.841-1.149 1.065-0.252 0.168-0.308 0.504-0.168 0.729 0.168 0.252 0.504 0.308 0.757 0.168 0 0 0 0 0 0 0.224-0.168 0.644-0.392 0.981-0.757 0.056 0.028 0.112 0.056 0.168 0.084 0.336 0.168 0.701 0.252 1.009 0.252 0.308 0.028 0.56-0.196 0.588-0.476 0.056-0.336-0.168-0.588-0.448-0.616z"></path>
+                                    <path d="M17.513 10.060c-0.028 0-0.028 0-0.056 0-0.392-0.084-0.785-0.168-1.093-0.392-0.112-0.084-0.196-0.168-0.28-0.308 0 0 0 0 0 0-0.028-0.056-0.056-0.112-0.084-0.168-0.084-0.224-0.112-0.504-0.112-0.925 0.028-0.308-0.196-0.56-0.504-0.56-0.028 0-0.056 0-0.056 0-0.28 0.028-0.504 0.252-0.504 0.504-0.028 0.56 0.056 1.037 0.224 1.429 0.084 0.392-0.056 0.701-0.28 0.925s-0.504 0.252-0.56 0.224c-0.28-0.112-0.588 0-0.701 0.28s0 0.588 0.28 0.701c0.028 0 0.056 0.028 0.056 0.028 0.616 0.224 1.261-0.028 1.709-0.476 0.168-0.168 0.336-0.392 0.448-0.644 0.476 0.28 0.981 0.336 1.233 0.42 0.28 0.084 0.588-0.084 0.672-0.364 0.056-0.28-0.112-0.588-0.392-0.672z"></path>
+                                </svg>
+                                <strong>Cognitive <small style="vertical-align: baseline">(approx 9.4 million people)</small> </strong>- any limitations in the ability to think or reason that affect a person’s capacity to perform a task
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Disability Classifications</p>
+                            <ul>
+                                <li>
+                                    <strong>Vision</strong>- color blind, low vision and blind
+                                </li>
+                                <li>
+                                    <strong>Hearing</strong>- deaf and hard of hearing
+                                </li>
+                                <li>
+                                    <strong>Motor</strong>- loss/limitation of function in muscle control
+                                </li>
+                                <li>
+                                    <strong>Cognitive</strong>- any limitations in the ability to think or reason that affect a person’s capacity to perform a task
+                                </li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <video controls style="max-width: 65%;">
+                            <source src="video/what_is_accessibility.mov">
+                        </video>
+                        <p>Original <a href="https://www.w3.org/WAI/videos/standards-and-benefits/">video source</a> from the w3c.</p>
+                        <aside class="notes">
+                            <p>Here's part of a short video produced by the w3c that does a great job explaining web accessibility.</p>
+                            <p>[AFTER THE VIDEO] - I recommend checking out other the videos by the W3C on web
+                                accessibility. And they have a lot of other great content such as: tutorials and a wcag quick reference site.
+                            </p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Different people benefit</h2>
+                        <a href="https://download.microsoft.com/download/B/0/D/B0D4BF87-09CE-4417-8F28-D60703D672ED/INCLUSIVE_TOOLKIT_MANUAL_FINAL.pdf"><img src="image/personas.png" style="width: 25%;"></a>
+                        <aside class="notes">
+                            <p>One of the interesting things that the video mentions is that building for accessibility ends up benefiting everyone.
+                                As a new-ish mom, I've been in the position of barely having a free hand to navigate a page, using closed captions
+                                and dimming my screen way down as I'm trying to get my lil guy to sleep.
+                            </p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1 class="smaller">Accidents happen...</h1>
+                    <section class="fragment">
+                        <img src="images/chris-coyier.png" style="width: 55%;">
+                        <aside class="notes">
+                            <p>Another case in point, one of the Abstractions feature speakers, Chris Coyier, had a biking accident and broke both his arms.
+                                Aside from the OMG and get well soons...
+                                He had a lot of replys that looked like this...
+                            </p>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <img src="images/coyier-responses.png" style="width: 55%;">
+                        <aside class="notes">
+
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <img src="images/coyier-responses2.png" style="width: 55%;">
+                        <aside class="notes">
+
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1>Web accessibility is essential for people with disabilities and useful for all. </h1>
+                    <aside class="notes">
+                        <p>I guess what I'm trying to emphasize is ... Web accessibility is essential for some, but useful for all.</p>
+                        <p>that being said ... </p>
+                    </aside>
+                </section>
+                <section>
+                    <section class="fragment" data-state="dark-bg">
+                        <h1 style="font-size: 6em;">
+                            Who is Responsible for Accessibility?
+                        </h1>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Is it the:</h1>
+                        <ol type="a" style="font-size: 1.4em;">
+                            <li class="fragment fade-in">CEO</li>
+                            <li class="fragment fade-in">Project Managers</li>
+                            <li class="fragment fade-in">Content Strategists</li>
+                            <li class="fragment fade-in">UX/Designers</li>
+                            <li class="fragment fade-in">Developers</li>
+                            <li class="fragment fade-in">QA Testers</li>
+                            <li class="fragment fade-in">Customer Service</li>
+                        </ol>
+                        <aside class="notes">
+                            <p>Is it the [read list]</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>Everyone.</h1>
+                        <a href="https://twitter.com/_hmig/status/743814630267584512"><img src="images/tweet.png" alt="tweet on everyone is responsible for accessibility" style="width: 50%"></a>
+                        <aside class="notes">
+                            <p>I'd say ... anyone that puts content out there to be consumed.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>Accessibility is not <span class="smaller">a specialist position.</span></h1>
+                        <p style="font-size: 1.8em;">One person* cannot make and maintain an accessible product alone.</p>
+                        <small><sup>*</sup>Unless this is a tiny, one person product/project.</small>
+                        <aside class="notes">
+                            <p>BUT, accessibility needs to be supported from end to end, starting with the product owner/ceo (person in charge) and ending with consumer touch point.</p>
+                            <p>Today - we'll be focused on the developer side of things, but everyone's support and cooperation is needed to make and maintain an accessible site.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section class="fragment" data-state="dark-bg">
+                        <h1>Reasons for making things accessible</h1>
+                        <aside class="notes">
+                            <p>Reasons for accessibility</p>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <h1>
+                            <svg aria-hidden="true" style="width: 60px; height: auto; fill: white; background: #115e96;padding: 11px;border-radius: 5em; vertical-align: baseline;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28">
+                                <path d="M27.672 24q0 0.828-0.578 1.406l-1.672 1.687q-0.609 0.578-1.422 0.578-0.828 0-1.406-0.578l-5.672-5.688q-0.594-0.562-0.594-1.406 0-0.828 0.672-1.5l-4-4-1.969 1.969q-0.219 0.219-0.531 0.219t-0.531-0.219q0.031 0.031 0.195 0.187t0.195 0.203 0.156 0.18 0.156 0.211 0.094 0.211 0.086 0.258 0.023 0.281q0 0.594-0.438 1.062-0.047 0.047-0.258 0.281t-0.297 0.32-0.289 0.258-0.344 0.242-0.344 0.141-0.406 0.070q-0.625 0-1.062-0.438l-6.375-6.375q-0.438-0.438-0.438-1.062 0-0.203 0.070-0.406t0.141-0.344 0.242-0.344 0.258-0.289 0.32-0.297 0.281-0.258q0.469-0.438 1.062-0.438 0.156 0 0.281 0.023t0.258 0.086 0.211 0.094 0.211 0.156 0.18 0.156 0.203 0.195 0.187 0.195q-0.219-0.219-0.219-0.531t0.219-0.531l5.437-5.437q0.219-0.219 0.531-0.219t0.531 0.219q-0.031-0.031-0.195-0.187t-0.195-0.203-0.156-0.18-0.156-0.211-0.094-0.211-0.086-0.258-0.023-0.281q0-0.594 0.438-1.062 0.047-0.047 0.258-0.281t0.297-0.32 0.289-0.258 0.344-0.242 0.344-0.141 0.406-0.070q0.625 0 1.062 0.438l6.375 6.375q0.438 0.438 0.438 1.062 0 0.203-0.070 0.406t-0.141 0.344-0.242 0.344-0.258 0.289-0.32 0.297-0.281 0.258q-0.469 0.438-1.062 0.438-0.156 0-0.281-0.023t-0.258-0.086-0.211-0.094-0.211-0.156-0.18-0.156-0.203-0.195-0.187-0.195q0.219 0.219 0.219 0.531t-0.219 0.531l-1.969 1.969 4 4q0.672-0.672 1.5-0.672 0.812 0 1.422 0.578l5.672 5.672q0.578 0.609 0.578 1.422z"></path>
+                            </svg>
+                            Legal</h1>
+                        <ol style="font-size: 1.4em">
+                            <li class="fragment fade-in">Title III of the ADA requires that public and private establishments provide reasonable accommodations to the disabled
+                                <ul> <li class="fragment fade-in">The DOJ has stated that law applies to online entities as well</li></ul>
+                            </li>
+                            <li class="fragment fade-in">Dealing with legal cases can harm brand/identity and be very costly</li>
+                        </ol>
+                        <small style="margin-top: 1em;" class="fragment fade-in"><a href="http://www.karlgroves.com/2011/12/08/reduction-of-legal-risk-as-accessibility-business-case/" target="_blank">Reduction of Legal Risk as Web Accessibility Business Case</a> and <a href="http://www.karlgroves.com/2011/11/15/list-of-web-accessibility-related-litigation-and-settlements/" target="_blank">List of Lawsuits</a></small>
+                        <aside class="notes">
+                            <p>definately the major motivator these days...prob the #1 reason companies actually do it</p>
+                            <p><strong>Title III</strong> of the ADA requires that public and private establishments provide reasonable accommodations to the disabled</p>
+                            <p><strong>the DOJ</strong> has stated that law applies online as well.</p>
+                            <p><strong>So - inaccessibility</strong> can lead to legal fees, settlement costs, and harm to brand/identity</p>
+                        </aside>
+                    </section>
+                    <section class="fragment fade-in">
+                        <h1><svg aria-hidden="true" style="width: 45px; height: auto; fill: white; background: #115e96;padding: 11px;border-radius: 1em; vertical-align: baseline;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="-6 0 28 28">
+                                <path d="M15.281 18.516q0 2.391-1.555 4.117t-4.039 2.133v2.734q0 0.219-0.141 0.359t-0.359 0.141h-2.109q-0.203 0-0.352-0.148t-0.148-0.352v-2.734q-1.031-0.141-1.992-0.484t-1.586-0.695-1.156-0.75-0.727-0.586-0.273-0.281q-0.266-0.328-0.031-0.641l1.609-2.109q0.109-0.156 0.359-0.187 0.234-0.031 0.375 0.141l0.031 0.031q1.766 1.547 3.797 1.953 0.578 0.125 1.156 0.125 1.266 0 2.227-0.672t0.961-1.906q0-0.438-0.234-0.828t-0.523-0.656-0.914-0.586-1.031-0.5-1.25-0.508q-0.609-0.25-0.961-0.391t-0.961-0.414-0.977-0.484-0.883-0.555-0.836-0.664-0.68-0.766-0.555-0.906-0.328-1.039-0.133-1.219q0-2.156 1.531-3.781t3.984-2.094v-2.812q0-0.203 0.148-0.352t0.352-0.148h2.109q0.219 0 0.359 0.141t0.141 0.359v2.75q0.891 0.094 1.727 0.359t1.359 0.523 0.992 0.586 0.609 0.453 0.234 0.219q0.266 0.281 0.078 0.594l-1.266 2.281q-0.125 0.234-0.359 0.25-0.219 0.047-0.422-0.109-0.047-0.047-0.227-0.187t-0.609-0.414-0.914-0.5-1.164-0.406-1.336-0.18q-1.484 0-2.422 0.672t-0.938 1.734q0 0.406 0.133 0.75t0.461 0.648 0.617 0.516 0.875 0.484 0.945 0.422 1.094 0.43q0.828 0.313 1.266 0.492t1.188 0.547 1.18 0.664 0.969 0.781 0.828 0.992 0.492 1.195 0.203 1.469z"></path>
+                            </svg>
+                            Money</h1>
+                        <ol style="font-size: 1.4em">
+                            <li class="fragment fade-in">Larger potential consumer/user base
+                                <ul>
+                                    <li>Census Data Concludes: Nearly 1 in 5 People Have a Disability in the U.S.</li>
+                                </ul>
+                            </li>
+                            <li class="fragment fade-in">Work With the Government
+                                <ul>
+                                    <li>Businesses must comply with Section 508 when supplying Electronic and Information Technology</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <aside class="notes">
+                            <p><strong>According to Census Data:</strong> Nearly 1 in 5 People Have a Disability in the U.S.</p>
+                            <p>Opening your business up to 20% more of the population doesn't mean you'll make 20% more, but at least you won't be preventing it</p>
+                            <!--<p>Think about how low of a usage % before you are able to stop supporting a browser version ... such as IE8.</p>-->
+                            <p><strong>Also - Businesses</strong> must comply with Section 508 when supplying Electronic and Information Technology goods and services to the federal government.  </p>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <h1><svg aria-hidden="true" style="width: 60px; height: auto; fill: white; background: #115e96;padding: 11px;border-radius: 5em; vertical-align: baseline;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="28" viewBox="0 0 30 28">
+                                <path d="M22.5 7q0-0.625-0.438-1.062t-1.062-0.438-1.062 0.438-0.438 1.062 0.438 1.062 1.062 0.438 1.062-0.438 0.438-1.062zM26 2.5q0 3.891-1.18 6.727t-3.961 5.633q-1.266 1.25-3.047 2.75l-0.313 5.922q-0.031 0.25-0.25 0.406l-6 3.5q-0.109 0.063-0.25 0.063-0.187 0-0.359-0.141l-1-1q-0.203-0.219-0.125-0.5l1.328-4.312-4.391-4.391-4.312 1.328q-0.047 0.016-0.141 0.016-0.219 0-0.359-0.141l-1-1q-0.266-0.297-0.078-0.609l3.5-6q0.156-0.219 0.406-0.25l5.922-0.313q1.5-1.781 2.75-3.047 2.938-2.922 5.594-4.031t6.734-1.109q0.219 0 0.375 0.148t0.156 0.352z"></path>
+                            </svg>
+                            Future Technology</h1>
+                        <p><img src="images/zeldman-tweet.png" style="width:80%;"></p>
+                        <aside class="notes">
+                            <p> By using proper markup and the latest standards, the content is more flexible. Then, it is easy to use tools to extract and present the information to users in different modalities (gym equipment, refrigerator, ...).</p>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <h1><svg aria-hidden="true" style="width: 60px; height: auto; fill: white; background: #115e96;padding: 11px;border-radius: 5em; vertical-align: baseline;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="28" viewBox="0 0 30 28">
+                                <path d="M22.5 7q0-0.625-0.438-1.062t-1.062-0.438-1.062 0.438-0.438 1.062 0.438 1.062 1.062 0.438 1.062-0.438 0.438-1.062zM26 2.5q0 3.891-1.18 6.727t-3.961 5.633q-1.266 1.25-3.047 2.75l-0.313 5.922q-0.031 0.25-0.25 0.406l-6 3.5q-0.109 0.063-0.25 0.063-0.187 0-0.359-0.141l-1-1q-0.203-0.219-0.125-0.5l1.328-4.312-4.391-4.391-4.312 1.328q-0.047 0.016-0.141 0.016-0.219 0-0.359-0.141l-1-1q-0.266-0.297-0.078-0.609l3.5-6q0.156-0.219 0.406-0.25l5.922-0.313q1.5-1.781 2.75-3.047 2.938-2.922 5.594-4.031t6.734-1.109q0.219 0 0.375 0.148t0.156 0.352z"></path>
+                            </svg>
+                            Future Technology</h1>
+                        <p>
+                            <img src="images/echo.png" style="width:50%;">
+                        </p>
+                        <aside class="notes">
+                            <p>Also makes it easier to allow for devices like this to use your site [for content OR interaction].</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section  data-state="dark-bg">
+                            <h1 >
+                                The WebAIM Million
+                            </h1>
+                        <aside class="notes">
+                            <p>So...what's the current state of web accessibility? Let's talk about the webaim million audit...</p>
+
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>Who is WebAIM?</h1>
+                        <ul style="font-size: 1.4em;">
+                            <li class="fragment fade-in">a non-profit organization based at the Center for Persons with Disabilities at Utah State University</li>
+                            <li class="fragment fade-in">have been providing comprehensive web accessibility solutions since 1999</li>
+                            <li class="fragment fade-in">20 years of experience have made WebAIM one of the leading providers of web accessibility expertise internationally</li>
+                        </ul>
+                        <p class="fragment fade-in">Info from <a href="https://webaim.org/about/">WebAIM/about</a></p>
+                        <aside class="notes">
+                            <p>Who is WebAIM?</p>
+                            <ul>
+                                <li>a <strong>non-profit</strong> organization out of Utah State University that has been <strong>providing</strong> web accessibility solutions for <strong>20 years</strong></li>
+                                <li>They are one of the leading providers of web accessibility expertise internationally</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>The Audit</h1>
+                        <ul style="font-size: 1.4em;">
+                            <li class="fragment fade-in">accessibility evaluation of the home pages for the top 1,000,000 web sites (from <a href="https://majestic.com/reports/majestic-million">the Majestic Millions list</a>)</li>
+                            <li class="fragment fade-in">used WAVE accessibility engine to analyze the rendered home pages</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>The <strong>folks of WebAIM</strong> ran the <strong>WAVE accessibility</strong> engine on the top 1 million home pages.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1>The Million</h1>
+                            <a href="https://majestic.com/reports/majestic-million"><img src="images/the-million-2.png" alt="screenshot of the majestic million showing the top 10 sites" style="box-shadow: none;background: transparent;width: 50%;"/></a>
+                        </div>
+                        <aside class="notes">
+                            <p>The million comes from "the majestic million" - This is basically any/every major site you can think of...and then almost a million more.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1>Wave</h1>
+                            <img src="images/wave.png" alt="screenshot of the wave landing page" style="box-shadow: none;background: transparent;width: 70%;"/>
+                        </div>
+                        <aside class="notes">
+                            <p> The WAVE engine uses logic to detect patterns in web page content and matches those patterns against
+                                the Web Content Accessibility Guidelines (WCAG) conformance to detect failures.
+                                </p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Automation can only <strong style="font-size: 1.5em;line-height: .98em;color: #333;">catch around 25%</strong> of WCAG conformance failures.</h1>
+                        <aside class="notes">
+                            <p>Here's the thing though ...
+                                All automated tools are limited in their ability to detect accessibility issues.
+                                and can only detect approximately 25% of possible conformance issues.
+                                So, getting 0 errors or 100% does not mean that a site is accessible or compliant.
+                                </p>
+                            <p>That being said, the data from this audit can provide a meaningful representation of the state of web accessibility.
+                            </p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 style="font-size: 3em;">Accessibility audit reveals:</h1>
+                            <ul style="font-size: 2em;">
+                                <li class="fragment fade-in"><strong style="color: #333;">97.8% of home pages</strong> had detectable WCAG 2 failures</li>
+                                <li class="fragment fade-in">an average of <strong style="color: #333;">59.6 errors</strong> per page</li>
+                                <li class="fragment fade-in">error density - <strong style="color: #333;">1 in every 13</strong> html elements</li>
+                            </ul>
+                        </div>
+                        <aside class="notes">
+                            <p>it revealed that <strong>98% of home pages</strong> had detectable WCAG 2 failures with an average of <strong>60 errors</strong> per page AND <strong>1 error out of every 13</strong> html elements. </p>
+                            <p>these are just the things that can be detected automatically ... I can only image what these pages are really like for folks to use</p>
+
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 style="font-size: 3em;">/me flips over a table</h1>
+                        <img src="images/tableFlip.gif" alt="My lil pony flipping a table over." style="box-shadow: none;background: transparent; width: 40%"/>
+                        <aside class="notes">
+                            <p>it me.</p>
+                            <p>We can definately do better than this!</p>
+                        </aside>
+                    </section>
+                    <section data-state="dark-bg">
+                        <h1 class="smaller" style="color:#115e96;font-size: 3em;font-weight: bold;font-family: 'Gotham-Round', Impact, sans-serif;">See that, it’s the internet.</h1>
+                        <img src="images/buzz-woody.gif" alt="">
+                        <h2>There are color contrast issues <em>everywhere</em>.</h2>
+                        <aside class="notes">
+                            <p>...</p>
+                            <p>my sad attempt at humor</p>
+                        </aside>
+                    </section>
+                    <section data-state="dark-bg">
+                        <h1 class="smaller" style="color:#fff;font-size: 3em;font-weight: bold;font-family: 'Gotham-Round', Impact, sans-serif;">See that, it’s the internet.</h1>
+                        <img src="images/buzz-woody.gif" alt="">
+                        <h2 style="color: #fff">There are color contrast issues <em>everywhere</em>.</h2>
+                        <aside class="notes">
+                            <p>That's better. I think.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 class="smaller">Most Common WCAG Failures</h1>
+                            <table>
+                                <tbody><tr><th>WCAG Failure Type</th><th># of home pages</th><th>% of home pages</th></tr>
+                                <tr class="fragment fade-in"><td>Low contrast text</td><td>852,868</td><td>85.3%</td></tr>
+                                <tr class="fragment fade-in"><td>Missing alternative text for images</td><td>679,964</td><td>68%</td></tr>
+                                <tr class="fragment fade-in"><td>Empty links</td><td>581,408</td><td>58.1%</td></tr>
+                                <tr class="fragment fade-in"><td>Missing form input labels</td><td>528,482</td><td>52.8%</td></tr>
+                                <tr class="fragment fade-in"><td>Missing document language</td><td>329,612</td><td>33.1%</td></tr>
+                                <tr class="fragment fade-in"><td>Empty buttons</td><td>250,367</td><td>25%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <aside class="notes">
+                            <p>Ok - so what kind of issues did the audit find?</p>
+                            <ul>
+                                <li>Low contrast text</li>
+                                <li>Missing alternative text for images</li>
+                                <li>Empty links</li>
+                                <li>Missing form input labels</li>
+                                <li>Missing document language</li>
+                                <li>Empty buttons</li>
+                            </ul>
+                            <p>Well - hey, at least these seem like pretty easy things to fix, right?</p>
+                            <p>Where do we go from here...?</p>
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section class="fragment" data-state="dark-bg">
+                        <h1 >
+                            Audit the Site
+                        </h1>
+                        <aside class="notes">
+                            <p>The only way to find and fix accessibility issues is to audit the site.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>Prioritize</h1>
+                        <ol style="font-size: 1.5em;">
+                            <li class="fragment fade-in">Site-wide elements (header, footer, nav, sidebar)</li>
+                            <li class="fragment fade-in">High priority reusable page/layout templates</li>
+                            <li class="fragment fade-in">High priority reusable components (toggles, buttons, modals, ...)</li>
+                            <li class="fragment fade-in">High priority pages (homepage, product pages, cart, ...)</li>
+                            <li class="fragment fade-in">Repeat 2-4 with the lower priority items</li>
+                        </ol>
+                        <aside class="notes">
+                            <p>First thing to do is to prioritize where to start.
+                                It makes sense to focus on site-wide elements like the <strong>header, footer and nav</strong> AND
+                                <strong>high priority reusable page templates and components</strong>.
+                                </p>
+                            <p>Probably the easiest way to
+                                do this is to focus on high priority pages like the <strong>homepage and a few other specific pages</strong> that
+                                check off a bunch of these list items just by fixing a few pages, it can have
+                                a large overall impact. <strong>Repeat.</strong>
+                            </p>
+                        </aside>
+                    </section>
+                    <section data-state="light-bg">
+                        <h1>Think "POUR"</h1>
+                        <p>The four main guiding principles of accessibility are:</p>
+                        <div style="text-align:left;margin-left: 4em; margin-top: 1em;">
+                            <p class="fragment fade-in">
+                                <span class="callout-letter" style="padding: 10px 22px 5px !important;">P</span>erceivable <span class="fragment fade-in">- provide content alternatives (images, audio, video)</span>
+                            </p>
+                            <p class="fragment fade-in">
+                                <span class="callout-letter" style="padding: 10px 19px 5px !important;">O</span>perable <span class="fragment fade-in">(without a mouse/trackpad)</span>
+                            </p>
+                            <p  class="fragment fade-in">
+                                <span class="callout-letter">U</span>nderstandable <span class="fragment fade-in">- clear and simple (writing and functionality)</span>
+                            </p>
+                            <p class="fragment fade-in">
+                                <span class="callout-letter">R</span>obust <span class="fragment fade-in">- works across many devices</span>
+                            </p>
+                        </div>
+                        <aside class="notes">
+                            <ul>
+                                <li>now that we have what we're going focus on, let's talk about the four main guiding principles of accessibility so we understand what we'll be testing for.</li>
+                                <li>think POUR</li>
+                                <li>Perceivable - provide content alternatives (images, audio, video)</li>
+                                <li>Operable (without a mouse/trackpad)</li>
+                                <li>Understandable - clear and simple (writing and functionality)</li>
+                                <li>Robust - works across many devices</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>Automated Testing Tools</h1>
+
+                        <ul style="font-size: 1.4em">
+                            <li class="fragment fade-in">aXe (<a href="https://www.deque.com/axe/">browser plugins</a>, <a href="https://www.deque.com/axe/axe-for-web/integrations/">testing frameworks</a>, build managers) [<a href="https://www.youtube.com/watch?v=jC_7NnRdYb0">video tutorial</a>]</li>
+                            <li class="fragment fade-in">Lighthouse (chrome dev tools, <a href="https://web.dev/measure">web.dev/measure</a>, or <a href="https://web.dev/using-lighthouse-bot-to-set-a-performance-budget">CI</a>)</li>
+                            <li class="fragment fade-in">Accessibility Insights for Web (browser plugin from Microsoft)</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Now that we know what pages we're testing ... LET's talk about testing!</p>
+                            <p>
+                                We have <strong>aXe</strong>, which is an open source testing engine (by Deque) that you'll find as the
+                                "rules engine" behind a lot of other tools like <strong>Lighthouse</strong> and <strong>Accessibility Insights</strong>.
+                            </p>
+                            <p>axe can be used as a browser
+                                plugin AND there's integration with common testing frameworks, js frameworks, build managers
+                                and so on. I included a link to video on how to set some of these up, but I'll
+                                show you how aXe works in the browser. Microsoft recently came out with Accessibility Insights for Web
+                                and it is really worth checking out as well.
+                            </p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>DEMO time</h1>
+                        <video controls style="max-width: 65%;">
+                            <source src="video/axeDemo.mov">
+                        </video>
+                        <aside class="note">
+
+                        </aside>
+                    </section>
+                    <section data-background="image/cat-keyboard-tandy.jpg">
+                        <h1 class="why">Keyboard Testing</h1>
+
+
+                        <aside class="notes">
+                            <p>Once you have the results of the automated test for a page, then you'll want to test it for keyboard navigation.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Tabbing. </h1>
+                        <video controls style="max-width: 65%;">
+                            <source src="video/tabbing.mov">
+                        </video>
+                        <aside class="notes">
+                            <h1>tabbing</h1>
+                            <ul>
+                                <li>Do you have to go through the main nav? Add a skip nav (and make sure it works!) -- add tabindex=-1 to elements you want to be focusable, but not in the normal tab order</li>
+                                <li>does the page highlight what your tabbing to?</li>
+                                <li>Do NOT remove the default :focus { outline: none; outline: 0; }! Update the css if you do not like how it looks, but do not remove it! It is imperative for ppl that nav via keyboard to see what the focus is on.</li>
+                                <li>Can you access all of the actionable elements?</li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Weird Tabbing? </h1>
+                        <video controls style="max-width: 65%;">
+                            <source src="video/amazon-weird-tabbing.mov">
+                        </video>
+                        <aside class="notes">
+                            <p>The DOM order does not match the visual order</p>
+                            <p>DO NOT add a tabIndex that is greater than 0.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Screen Reader Testing</h1>
+                        <a href="https://www.youtube.com/watch?v=5R-6WvAihms&list=PLPWa1W3JTQ9J-glNa5YR4oXzOPK_c2KBz&index=7">
+                            <img style="width: 50%" src="images/VO-link.png" alt="screenshot of a11ycasts video on youtube.">
+                        </a>
+                        <aside class="notes">
+                            <p>Unfortunately, I don't have the time to cover using a Screen Reader today, BUT,
+                                I have linked to a video series by the folks at Google that covers this and many other
+                                accessibility topics ... So, you can check out it later.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">Log Issues and Track Tickets</h1>
+                        <img style="width: 30%;box-shadow: none;" src="images/bug2.png" alt="mad-looking red bug icon">
+                        <aside class="notes">
+                            <p>Log the issues you as tickets to track your progress. It's pretty awesome being able look back in a year or so and see how far you've come.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section class="fragment" data-state="dark-bg">
+                        <div>
+                            <h1>
+                                Fix the Site
+                            </h1>
+                        </div>
+                        <aside class="notes">
+                            <p>Now that we know what issues need to be fixed....Let's get to it.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 class="smaller">Most Common WCAG Failures</h1>
+                            <table>
+                                <tbody>
+                                <tr><th>WCAG Failure Type</th><th># of home pages</th><th>% of home pages</th></tr>
+                                <tr><td>Low contrast text</td><td>852,868</td><td>85.3%</td></tr>
+                                <tr><td>Missing alternative text for images</td><td>679,964</td><td>68%</td></tr>
+                                <tr><td>Empty links</td><td>581,408</td><td>58.1%</td></tr>
+                                <tr><td>Missing form input labels</td><td>528,482</td><td>52.8%</td></tr>
+                                <tr><td>Missing document language</td><td>329,612</td><td>33.1%</td></tr>
+                                <tr><td>Empty buttons</td><td>250,367</td><td>25%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <aside class="notes">
+                            <p>Ok. Let's go back to the common failures list again and address these one by one...</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="91" viewBox="0 0 26 28" style="transform: rotate(45deg);fill: currentColor;">
+                                <title>bug</title>
+                                <path d="M25.5 15c0 0.547-0.453 1-1 1h-3.5c0 1.953-0.422 3.422-1.047 4.531l3.25 3.266c0.391 0.391 0.391 1.016 0 1.406-0.187 0.203-0.453 0.297-0.703 0.297s-0.516-0.094-0.703-0.297l-3.094-3.078s-2.047 1.875-4.703 1.875v-14h-2v14c-2.828 0-4.891-2.063-4.891-2.063l-2.859 3.234c-0.203 0.219-0.469 0.328-0.75 0.328-0.234 0-0.469-0.078-0.672-0.25-0.406-0.375-0.438-1-0.078-1.422l3.156-3.547c-0.547-1.078-0.906-2.469-0.906-4.281h-3.5c-0.547 0-1-0.453-1-1s0.453-1 1-1h3.5v-4.594l-2.703-2.703c-0.391-0.391-0.391-1.016 0-1.406s1.016-0.391 1.406 0l2.703 2.703h13.188l2.703-2.703c0.391-0.391 1.016-0.391 1.406 0s0.391 1.016 0 1.406l-2.703 2.703v4.594h3.5c0.547 0 1 0.453 1 1zM18 6h-10c0-2.766 2.234-5 5-5s5 2.234 5 5z"></path>
+                            </svg>
+                            Low contrast
+                        </h1>
+                        <video controls style="max-width: 65%;">
+                            <source src="video/contrast.mov">
+                        </video>
+                        <aside class="note">
+                            <p>There are TONS of tools available that address color contrast.
+                                I'm going to show you a quick and easy method using axe and the chrome dev tools.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 class="smaller">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="91" viewBox="0 0 26 28" style="transform: rotate(85deg);fill: currentColor;">
+                                    <title>bug</title>
+                                    <path d="M25.5 15c0 0.547-0.453 1-1 1h-3.5c0 1.953-0.422 3.422-1.047 4.531l3.25 3.266c0.391 0.391 0.391 1.016 0 1.406-0.187 0.203-0.453 0.297-0.703 0.297s-0.516-0.094-0.703-0.297l-3.094-3.078s-2.047 1.875-4.703 1.875v-14h-2v14c-2.828 0-4.891-2.063-4.891-2.063l-2.859 3.234c-0.203 0.219-0.469 0.328-0.75 0.328-0.234 0-0.469-0.078-0.672-0.25-0.406-0.375-0.438-1-0.078-1.422l3.156-3.547c-0.547-1.078-0.906-2.469-0.906-4.281h-3.5c-0.547 0-1-0.453-1-1s0.453-1 1-1h3.5v-4.594l-2.703-2.703c-0.391-0.391-0.391-1.016 0-1.406s1.016-0.391 1.406 0l2.703 2.703h13.188l2.703-2.703c0.391-0.391 1.016-0.391 1.406 0s0.391 1.016 0 1.406l-2.703 2.703v4.594h3.5c0.547 0 1 0.453 1 1zM18 6h-10c0-2.766 2.234-5 5-5s5 2.234 5 5z"></path>
+                                </svg>
+                                Missing alt text
+                            </h1>
+                            <img style="width: 30%" src="images/can-of-worms.png" alt="a cartoon showing someone reaching into a kitchen cabinet for either the floodgates, pandora's box or a can of worms.">
+                            <p>Deep dive into <a href="https://www.w3.org/WAI/tutorials/images/">images and alternative text from the w3c</a>
+                        </div>
+                        <aside class="notes">
+                            <p>In my opinion... Providing alt text for images is like opening a can of worms ...
+                                It is one of the easiest accessibility issues to fix, but one of the hardest
+                                to get right.</p>
+                            <p>The w3c does a great job of breaking down images by scenarios and providing the appropriate text alternatives for them. Let's go through a few of those now.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1>Is alternative text needed?</h1>
+                    <aside class="notes">
+                        <p>The first thing to consider is do we need to add alternative text?</p>
+                    </aside>
+                </section>
+                <section>
+                    <h1 class="smaller">Decorative Images</h1>
+                    <section>
+                        <div style="width: 40%; margin-top: 2em; float:left; text-align: left; font-size: .7em">
+                            <img src="images/iStockUnfinishedBusiness9.jpg" alt="Silly stock business photo with hollywood faces photoshopped in.">
+                            <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.</p>
+                        </div>
+                        <pre class="fragment fade-in" style="width: 50%; margin-left: 10%; margin-top: 12em; float:right;">
+<code>
+<img src="images/iStockUnfinishedBusiness9.jpg" alt="">
+<p>Bring to the table win-win survival strategies to ensure
+    proactive domination. At the end of the day, going forward,
+    a new normal that has evolved from generation X is on the
+    runway heading towards a streamlined cloud solution. User
+    generated content in real-time will have multiple touchpoints
+    for offshoring.</p>
+</code>
+</pre>
+                        <aside class="notes">
+                            <p>What does the graphic add to the page?</p>
+                            <p>Does it look like stock photography, space filler or meaningless eye candy?</p>
+                            <p>If it is purely decorative, we do not need to add alternative text.</p>
+                            <p><strong>We still need the alt attribute</strong> on the image BUT we can leave it empty [no space]. If you put a space, some screen readers will stumble on those images instead of skipping over them.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <figure style="width: 40%; float: left;">
+                            <img src="images/weather-radar.png" alt="" style="margin-top: 3em;">
+                            <figcaption style="text-align: left; border-top: 10px solid #1376BD;padding: 10px;font-size:.8em;">Weather Radar Report for Pittsburgh, PA on June 6, 2016 at 5:45 PM EDT showing several scattered storms heading west to east.</figcaption>
+                        </figure>
+                        <pre class="fragment fade-in" style="width: 50%;margin-left: 10%; margin-top: 12em; float: right;">
+<code>
+<figure>
+    <img src="images/weather-radar.png" alt="">
+<figcaption >Weather Radar Report for Pittsburgh,
+    PA on June 6, 2016 at 5:45 PM EDT showing several
+    scattered storms heading west to east.
+</figcaption>
+</figure>
+</code>
+</pre>
+                        <aside class="notes">
+                            <p>For images that have text around them, does the surrounding content serve as the alternative text?</p>
+                            <p><strong>In this case</strong> - yes. </p>
+                        </aside>
+                    </section>
+                    <section>
+                        <a href="https://codepen.io/hmig/pen/PoYzxKJ">
+                            <img src="images/decorative-card.png" style="width: 60%;margin-top: 3em;" alt="decorative image example on codepen">
+                        </a>
+                        <aside class="notes">
+                            <p>Images are sometimes added to a text link to increase the clickable area or to make it look better. Again, no alt text needed. </p>
+                            <p>FYI - this is how the chrome devtools shows an empty attribute, if you click to edit, it shows the equal sign and quotes.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1>Informative Images</h1>
+                    <section class="fragment fade-in" >
+                        <div class="warning" role="alert">
+                            <img src="images/warning.svg" alt="Warning!">
+                            <p>Please enter a valid address.</p>
+                        </div>
+                        <pre class="fragment fade-in" style="width: 90%;margin: 15px auto;">
+<code>
+<div class="warning" role="alert">
+    <img src="images/warning.svg" alt="Warning!">
+    <p>Please enter a valid address.</p>
+</div>
+</code>
+</pre>
+                        <aside class="notes">
+                            <p>This icon is a warning road sign and acting as a label to an alert, so the <strong>text alternative should be "warning"</strong>.</p>
+                        </aside>
+                    </section>
+                    <section class="fragment fade-in">
+                        <img src="images/alt-text.png" style="width: 50%; margin-top: 2em;">
+                        <aside class="notes">
+                            <p>Sometimes images are used to supplement other information</p>
+                            <p>This example shows the text describing what radar is</p>
+                            <p>So the image itself still needs alt text describing it.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1>Functional Images</h1>
+                    <section>
+                        <a href="https://codepen.io/hmig/pen/qBWNgPL">
+                            <img src="images/functional-image.png" style="width: 60%;margin-top: 3em;" alt="functional image example on codepen">
+                        </a>
+                        <aside class="notes">
+                            <p>Functional images are used to initiate actions rather
+                                than to convey information. They are used in buttons,
+                                links, and other interactive elements. </p><p>The text
+                                alternative for the image should convey the action
+                                that will be initiated (the purpose of the image),
+                                rather than a description of the image. </p><p>For instance, here the alt text is "Buy a hulu gift card."</p>
+                        </aside>
+                    </section>
+                    <section class="fragment fade-in" >
+                        <a href="#" aria-label="Functional image example using an icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="132" height="132" viewBox="0 0 32 32"><path d="M16 0q-3.313 0-6.219 1.25T4.687 4.688 1.249 9.782t-1.25 6.219 1.25 6.219 3.438 5.094 5.094 3.438T16 32.002t6.219-1.25 5.094-3.438 3.438-5.094 1.25-6.219-1.25-6.219-3.438-5.094-5.094-3.438T16 0zm4.313 9.875H18q-.438 0-.688.125t-.406.313-.219.469-.063.594v1.563h3.5l-.438 3.063h-3.063v9.25h-3v-9.25h-1.875v-3.063h1.875v-1.875q0-.938.156-1.719t.531-1.375 1.063-.906 1.75-.313h3.188v3.125z"></path></svg>
+                        </a>
+                        <pre class="fragment fade-in" style="width: 90%;margin: 15px auto;">
+<code>
+<a href="https://Dontactuallyusefacebook.com" aria-label="Don't like us on The Facebook">
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 32 32">
+        <path d="M16 0q-3.313 0-6.219 1.25T4.687 4.688 1.249 9.782t-1.25 6.219 1.25 6.219 3.438 5.094 5.094
+        3.438T16 32.002t6.219-1.25 5.094-3.438 3.438-5.094 1.25-6.219-1.25-6.219-3.438-5.094-5.094-3.438T16
+        0zm4.313 9.875H18q-.438 0-.688.125t-.406.313-.219.469-.063.594v1.563h3.5l-.438
+        3.063h-3.063v9.25h-3v-9.25h-1.875v-3.063h1.875v-1.875q0-.938.156-1.719t.531-1.375 1.063-.906 1.75-.313h3.188v3.125z">
+        </path></svg>
+</a>
+</code>
+</pre>
+                        <p class="fragment fade-in"><a href="https://css-tricks.com/accessible-svgs/">Accessible SVGs</a></p>
+                        <aside class="notes">
+                            <p>Here's another common example of a functional image...Most of the time, I see "facebook" as the alt text.</p>
+                            <p>BUT, what you're really trying to get folks to do is <strong>"like your page"</strong> or something.</p>
+                            <p>Side note, this is one of many ways to make something with an svg accessible. SVGs are in a different niche of image, so <strong>I included a link to an article on those</strong>.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1 class="smaller">Image Alt Decision Tree</h1>
+                    <a href="https://www.w3.org/WAI/tutorials/images/decision-tree/"><img style="width: 40%" src="images/image-alt-dec-tree.png" alt="the alt decision tree on the w3c website" style="width: 80%;"></a>
+                    <aside class="notes">
+                        <p>This is just a small sample of the types of images on the web. At the beginning of this section I provide a link to the w3c that has several more image examples.</p>
+                        <p>And if you need more help trying to figure out what type of alt text to add... They also provide this awesome alt decision tree.</p>
+                    </aside>
+                </section>
+                <section>
+                    <section>
+                        <h1 class="smaller">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="91" viewBox="0 0 26 28" style="transform: rotate(125deg);fill: currentColor;">
+                                <title>bug</title>
+                                <path d="M25.5 15c0 0.547-0.453 1-1 1h-3.5c0 1.953-0.422 3.422-1.047 4.531l3.25 3.266c0.391 0.391 0.391 1.016 0 1.406-0.187 0.203-0.453 0.297-0.703 0.297s-0.516-0.094-0.703-0.297l-3.094-3.078s-2.047 1.875-4.703 1.875v-14h-2v14c-2.828 0-4.891-2.063-4.891-2.063l-2.859 3.234c-0.203 0.219-0.469 0.328-0.75 0.328-0.234 0-0.469-0.078-0.672-0.25-0.406-0.375-0.438-1-0.078-1.422l3.156-3.547c-0.547-1.078-0.906-2.469-0.906-4.281h-3.5c-0.547 0-1-0.453-1-1s0.453-1 1-1h3.5v-4.594l-2.703-2.703c-0.391-0.391-0.391-1.016 0-1.406s1.016-0.391 1.406 0l2.703 2.703h13.188l2.703-2.703c0.391-0.391 1.016-0.391 1.406 0s0.391 1.016 0 1.406l-2.703 2.703v4.594h3.5c0.547 0 1 0.453 1 1zM18 6h-10c0-2.766 2.234-5 5-5s5 2.234 5 5z"></path>
+                            </svg>
+                            Empty links and buttons
+                        </h1>
+                        <a href="https://codepen.io/hmig/pen/PoYzxKJ" style="width: 30%; float:left;">
+                            <img src="images/decorative-card.png"  alt="decorative image example on codepen">
+                        </a>
+                        <a href="#" aria-label="Functional image example using an icon" style="width: 30%; float:left; margin-left: 5%">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="132" height="132" viewBox="0 0 32 32"><path d="M16 0q-3.313 0-6.219 1.25T4.687 4.688 1.249 9.782t-1.25 6.219 1.25 6.219 3.438 5.094 5.094 3.438T16 32.002t6.219-1.25 5.094-3.438 3.438-5.094 1.25-6.219-1.25-6.219-3.438-5.094-5.094-3.438T16 0zm4.313 9.875H18q-.438 0-.688.125t-.406.313-.219.469-.063.594v1.563h3.5l-.438 3.063h-3.063v9.25h-3v-9.25h-1.875v-3.063h1.875v-1.875q0-.938.156-1.719t.531-1.375 1.063-.906 1.75-.313h3.188v3.125z"></path></svg>
+                        </a>
+                        <a href="https://codepen.io/hmig/pen/qBWNgPL" style="width: 30%; float:left; margin-left: 5%">
+                            <img src="images/functional-image.png" alt="functional image example on codepen">
+                        </a>
+
+                        <aside class="notes">
+                            <p>Back to the common issues list ...  Empty links and buttons </p>
+                            <p>ACTUALLY - we just covered these. We end up with empty links and buttons because images are used...</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 class="smaller">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="91" viewBox="0 0 26 28" style="transform: rotate(205deg);fill: currentColor;">
+                                    <title>bug</title>
+                                    <path d="M25.5 15c0 0.547-0.453 1-1 1h-3.5c0 1.953-0.422 3.422-1.047 4.531l3.25 3.266c0.391 0.391 0.391 1.016 0 1.406-0.187 0.203-0.453 0.297-0.703 0.297s-0.516-0.094-0.703-0.297l-3.094-3.078s-2.047 1.875-4.703 1.875v-14h-2v14c-2.828 0-4.891-2.063-4.891-2.063l-2.859 3.234c-0.203 0.219-0.469 0.328-0.75 0.328-0.234 0-0.469-0.078-0.672-0.25-0.406-0.375-0.438-1-0.078-1.422l3.156-3.547c-0.547-1.078-0.906-2.469-0.906-4.281h-3.5c-0.547 0-1-0.453-1-1s0.453-1 1-1h3.5v-4.594l-2.703-2.703c-0.391-0.391-0.391-1.016 0-1.406s1.016-0.391 1.406 0l2.703 2.703h13.188l2.703-2.703c0.391-0.391 1.016-0.391 1.406 0s0.391 1.016 0 1.406l-2.703 2.703v4.594h3.5c0.547 0 1 0.453 1 1zM18 6h-10c0-2.766 2.234-5 5-5s5 2.234 5 5z"></path>
+                                </svg>
+                                Missing form input labels
+                            </h1>
+                            <ul style="width: 90%;">
+                                <li class="fragment fade-in">Label everything and link the label to the input</li>
+                                <pre class="fragment fade-in">
+<code>
+    <label for="email">Email Address</label>
+    <input id="email" type="email" placeholder="Email">
+
+</code>
+</pre>
+                                <li class="fragment fade-in">You can wrap the input with the label</li>
+                                <pre class="fragment fade-in">
+<code>
+    <label for="email">
+        Email Address
+        <input type="email" placeholder="Email">
+    </label>
+
+</code>
+</pre>
+                                <li class="fragment fade-in">Don't forget to label things that have hidden labels (search box). </li>
+                                <pre class="fragment fade-in">
+<code>
+    <input type="text" aria-label="Search for Gift Cards" placeholder="Search for Gift Cards">
+</code>
+</pre>
+                            </ul>
+
+                        </div>
+                        <aside class="notes">
+                            <p></p>
+                        </aside>
+                    </section>
+                    <section>
+                        <div>
+                            <h1 class="smaller">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="91" viewBox="0 0 26 28" style="transform: rotate(245deg);fill: currentColor;">
+                                    <title>bug</title>
+                                    <path d="M25.5 15c0 0.547-0.453 1-1 1h-3.5c0 1.953-0.422 3.422-1.047 4.531l3.25 3.266c0.391 0.391 0.391 1.016 0 1.406-0.187 0.203-0.453 0.297-0.703 0.297s-0.516-0.094-0.703-0.297l-3.094-3.078s-2.047 1.875-4.703 1.875v-14h-2v14c-2.828 0-4.891-2.063-4.891-2.063l-2.859 3.234c-0.203 0.219-0.469 0.328-0.75 0.328-0.234 0-0.469-0.078-0.672-0.25-0.406-0.375-0.438-1-0.078-1.422l3.156-3.547c-0.547-1.078-0.906-2.469-0.906-4.281h-3.5c-0.547 0-1-0.453-1-1s0.453-1 1-1h3.5v-4.594l-2.703-2.703c-0.391-0.391-0.391-1.016 0-1.406s1.016-0.391 1.406 0l2.703 2.703h13.188l2.703-2.703c0.391-0.391 1.016-0.391 1.406 0s0.391 1.016 0 1.406l-2.703 2.703v4.594h3.5c0.547 0 1 0.453 1 1zM18 6h-10c0-2.766 2.234-5 5-5s5 2.234 5 5z"></path>
+                                </svg>
+                                Missing document language
+                            </h1>
+                            <figure>
+                                <img style="width: 70%" src="images/doc-lang.png" alt="screenshot of example code from the w3c">
+                                <figcaption>This example defines the content of an HTML document to be in the French language. <a href="https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/H57">Example from the w3c</a></figcaption>
+                            </figure>
+                        </div>
+                        <aside class="notes">
+                            <p>Here's a SUPER easy one to fix....</p>
+                            <p>Adding the "lang" attribute to the opening html tag.</p>
+                            <p>this example is stolen straight from the w3c's docs ;)</p>
+                        </aside>
+                    </section>
+                </section>
+
+                 <section>
+                     <section data-state="dark-bg">
+                         <h1 style="font-size: 6em">Other common accessibility issues</h1>
+                         <aside class="notes">
+                             <p>So, that concludes the list from the audit, but there are other common issues that pop up.</p>
+                         </aside>
+                     </section>
+                     <section>
+                        <h1>Semantic HTML</h1>
+                        <ul style="font-size: 1.4em">
+                            <li class="fragment fade-in">Headings
+                                <ul>
+                                    <li class="fragment fade-in">are meant to help users understand content hierarchy</li>
+                                    <li class="fragment fade-in">levels should not be skipped (BAD - h1, h2, h4)</li>
+                                </ul>
+                            </li>
+                            <li class="fragment fade-in" style="margin-top: 1em;">Links, Buttons, Divs and Spans
+                                <ul>
+                                    <li class="fragment fade-in">a, div and span ARE NOT buttons <pre><code><a href="#" onmouseover="dropdownmenu()">Products</a></code></pre>
+                                    </li>
+                                    <li class="fragment fade-in">if it acts like a button, make it a <pre><code><button onmouseover="dropdownmenu()" class="btn-primary">button</button></code></pre>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            <p><strong>Headings</strong></p>
+                            <ol>
+                                <li><strong>Heading tags</strong> are for content hierarchy (outline), not for styling</li>
+                                <li><strong>If you want an h3</strong> to look like an h4, style it with CSS, but don't skip heading levels.</li>
+                            </ol>
+                            <p>I see a lot of <strong>Divs and spans</strong> being used as links and buttons...</p>
+                            <ol>
+                                <li><strong><code>DIV</code>s and <code>SPAN</code>s</strong> are not buttons</li>
+                                <li>and are not natively supported to have keyboard focus, name, role, or value ... why use them and have to add all of this support via more code?</li>
+                                <li>If you don’t like how a button or link looks, style it with CSS.</li>
+                                <li>If the element navigates, it is a link. Use link markup with a valid hypertext reference</li>
+                                <li><strong>If the element triggers an action</strong>, it is a button. Use a <code>BUTTON</code> element</li>
+                            </ol>
+                        </aside>
+                     </section>
+                 </section>
+                 <section>
+                     <section data-state="dark-bg">
+                         <h1>Accessible Rich Internet Applications (ARIA)</h1>
+                     </section>
+                    <section>
+                        <h1 class="smaller">ARIA: provides a set of attributes that you can add to HTML elements.</h1>
+                        <ul style="font-size: 1.4em">
+                            <li class="fragment fade-in">role</li>
+                            <li class="fragment fade-in">state</li>
+                            <li class="fragment fade-in">property</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>ARIA was created by the Web Accessibility Initiative (or WAI) of the W3C and it provides a standard that allows developers to set:</p>
+                            <ul>
+                                <li><strong>roles</strong></li>
+                                <li><strong>states</strong></li>
+                                <li><strong>and properties</strong></li>
+                            </ul>
+                            <p>on html elements.</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">First rule of ARIA use: Don't use it!</h1>
+                        <img src="image/first-rule-of-aria.png" style="width:90%;">
+                        <aside class="notes">
+                            <p>If you can use a native HTML element or attribute, do it. - straight from the w3c</p>
+                        </aside>
+                    </section>
+                    <section data-state="dark-bg">
+                        <p style="color:white; font-family: 'Lobster Two', cursive;font-size: 4em;	text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">"ARIA roles add nothing to default semantics of most elements" - Steve Faulkner</p>
+                    </section>
+                    <section>
+                        <h3>Don't add default implicit roles to elements</h3>
+                        <p class="fragment fade-in">❮button <strike>role="button"</strike>❯ button text ❮/button❯</p>
+                        <br>
+                        <h3 class="blue fragment fade-in">Don't add ARIA state or property attributes in addition to their native HTML counterparts</h3>
+                        <p class="fragment fade-in">❮input type="text" required <strike>aria-required="true"</strike>❯</p>
+                        <p class="fragment fade-in">❮div hidden <strike>aria-hidden="true"</strike>❯</p>
+                        <br>
+                        <h3 class="blue fragment fade-in">Don't add ARIA roles and states or properties to long-implemented structural elements</h3>
+                        <p class="fragment fade-in current-fragment">❮h1 <strike>role="heading" aria-level="1"</strike>❯heading text❮/h1❯</p>
+                    </section>
+                     <section>
+                         <h1 class="smaller">HTML5 Elements with implicit semantics</h1>
+                         <p>What this means is that, <strong>where implemented</strong>, the browser will expose the default implicit semantics of the element so you don’t have to.</p>
+                         <p>&#10094;header&#10095; maps to role="banner"</p>
+                         <p>&#10094;nav&#10095; maps to role="navigation"</p>
+                         <p>&#10094;main&#10095; maps to role="main" </p>
+                         <p>&#10094;section&#10095; maps to role="region" </p>
+                         <p>&#10094;article&#10095; maps to role="article"</p>
+                         <p>&#10094;aside&#10095; maps to role="complementary" </p>
+                         <p>&#10094;footer&#10095; maps to role="contentinfo"</p>
+                     </section>
+                </section>
+
+                <section>
+                    <section data-state="dark-bg">
+                        <h1>Now what?</h1>
+                    </section>
+                    <section data-background="images/wash-rinse.jpeg">
+                        <h1 class="why">Rinse and Repeat.</h1>
+                        <aside class="notes">
+                            <p>Repeat the process</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section data-state="dark-bg">
+                        <h1>And Then...</h1>
+                    </section>
+                    <section data-background="images/braille.jpg">
+                        <h1 class="why">Test With Real Users</h1>
+                        <aside class="notes">
+                            <p>BUT - you can never replace seeing the real user experience.</p>
+                            <p>It's always eye-opening to conduct user testing.</p>
+                            <p>You never think somethings really "that bad" ... pause ... </p>
+                            <p>Until you realize someone has to have someone else to click a button for them because they cannot access it.</p>
+                            <p>You will see a different internet.</p>
+                        </aside>
+                    </section>
+                    <section class="fragment">
+                        <div>
+                            <blockquote>
+                                <p class="left-align">Think of it this way: you wouldn’t want a designer or developer to do usability testing by testing the design or code on themselves. ... They’re already familiar with what problems the design is supposed to be solving, and how the interface works. - <a href="https://adactio.com/journal/10104" target="_blank">Jeremy Keith</a></p>
+                            </blockquote>
+                        </div>
+                    </section>
+                    <section>
+                        <h1>Access Works</h1>
+                        <a href="https://access-works.com/"><img style="width: 50%" src="images/access-works.png" alt="Access Works User Testing"></a>
+                        <p>Include people with disabilities in your usability studies and testing.</p>
+                        <aside class="notes">
+                            <p>Access Works is an organization that pairs companies to folks with disabilities for user testing.</p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section data-state="dark-bg">
+                        <h1>Finally...</h1>
+                    </section>
+                    <section>
+                        <h1>Keep it Clean</h1>
+                        <img style="width: 50%" src="images/lighthouse.jpg" alt="">
+                        <aside class="notes">
+                            <p>Implement some sort of threshold mechanism to make sure that once code is fixed,
+                                it stays fixed.</p>
+                            <p>Either through</p>
+                            <ul>
+                                <li>QA - make sure keyboard navigation works</li>
+                                <li>Continuous Integration checks</li>
+                                <li>A Stage spidering automated test</li>
+                            </ul>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Summing Up</h1>
+                        <ol style="font-size: 1.4em">
+                            <li class="fragment fade-in">Audit & Document
+                                <ul>
+                                    <li class="fragment fade-in">Remember POUR</li>
+                                    <li class="fragment fade-in">Prioritize</li>
+                                    <li class="fragment fade-in">Automated Testing</li>
+                                    <li class="fragment fade-in">Keyboard Testing</li>
+                                    <li class="fragment fade-in">Screen Reader Testing</li>
+                                </ul>
+                            </li>
+                            <li class="fragment fade-in">Fix the issues</li>
+                            <li class="fragment fade-in">Repeat 1 & 2 until complete</li>
+                            <li class="fragment fade-in">User Test</li>
+                            <li class="fragment fade-in">Enforce code quality thresholds</li>
+                        </ol>
+                        <aside class="notes">
+                            <h1>Summing Up</h1>
+                            <ol>
+                                <li>Auditing & Documentation
+                                    <ul>
+                                        <li>Remember POUR [what does POUR stand for?]</li>
+                                        <li>Prioritize what to test first </li>
+                                        <li>Run Automated Tests</li>
+                                        <li>Then test with the Keyboard</li>
+                                        <li>Finally, test with Screen Readers [and any other AT you can get your hands on]</li>
+                                    </ul>
+                                </li>
+                                <li>Fix the issues found while auditing</li>
+                                <li>Repeat steps 1 & 2 until complete</li>
+                                <li>Ensure you not only fixed the issues, but that the site is usable by user testing</li>
+                                <li>And Enforce code quality thresholds</li>
+                            </ol>
+                            <p>PHEW</p>
+                        </aside>
+                    </section>
+                    <section data-state="dark-bg">
+                        <h1 style="font-family: 'Lobster Two', cursive;font-size: 6em; color:#fff;"> Progress is Better than Perfection</h1>
+                        <aside class="notes">
+                            <p>Remember: Progress is Better than Perfection</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h1 class="smaller">The state of the web is bad</h1>
+                        <p style="font-size: 1.4em; width: 50%; float: left; text-align: left;"><span style="font-size: 1.4em; font-weight: bold">98% of home pages</span> had detectable WCAG 2 failures with an <span style="font-size: 1.4em; font-weight: bold">average of 60 errors</span> per page
+                            AND <span style="font-size: 1.4em; font-weight: bold">1 error out of every 13</span> html elements.
+                        </p>
+                        <img src="images/box-of-shame.gif" style="width: 40%; margin-left: 10%; float: right;" alt="box of shame gif from Despicable Me">
+                        <aside class="notes">
+                            <p>Back to the WebAIM million...Based on this audit, it's like the entire internet is literally telling people with disabilities that no one cares about them
+                                and that they're not welcome. Is that really who we are? </p>
+                            <p>I don't think so. We're better than this. We can do better than this. And ... I hope I made the pathway a little easier to see.</p>
+                        </aside>
+                    </section>
+                    <section class="reset-bg-size" data-background="images/slack.svg">
+                    <h1 class="why" style="width: 120%;margin-left: -1em;font-size: 2.11em;top: 2em;">When You Need Help <br><small>A11y Slackers: Invite only - DM me [<a style="color:white;" href="https://twitter.com/_hmig">@_hmig</a>] on twitter <br> #a11y on twitter</small></h1>
+                        <aside class="notes">
+                            <p>AND it's not just me who's here to help you. There is an entire community
+                                focused on accessibility and they are amazing. There are some cranky folks that
+                                have been doing it forever and can't believe the internet is in the state it is...
+                                But, they're still really helpful.
+                            </p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h1>Slides</h1>
+                    <p style="font-size: 2em">http://hmig.github.io/link/</p>
+                </section>
+                <section data-background="images/easy-peasy.gif">
+                    <h1 class="why" style="background: none;">Thank you!</h1>
+                </section>
+            </div>
+        </div>
+
+        <footer>
+            <img src="image/bhn-logo.svg" alt="employed by BlackHawk" role="img" class="float-left" style="height: 40px; border-right: 2px solid #115e96; padding-right: 1em; margin-right: 1em;"><p>Heather Migliorisi / <a href="https://twitter.com/_hmig" style="text-decoration: none; font-weight: 900; color: #115e96;">@_hmig</a> on <img src="image/twitter.svg" alt="Twitter" role="img" style="vertical-align: bottom;"></p>
+        </footer>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+                width: "100%",
+                height: "100%",
+
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+                // Optional reveal.js plugins
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/accessibility-helper/js/accessibility-helper.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
